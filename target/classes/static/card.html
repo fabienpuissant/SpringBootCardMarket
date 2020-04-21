@@ -34,6 +34,14 @@
 	      </div>
 	  </h3>
 	  
+	      <h3 class="ui left floated header">
+	
+	      <div class="content" id ="craftIcon">
+	          <i class="plus icon"></i>
+	          
+	      </div>
+	  </h3>
+	  
 	  <h3 class="ui right floated header">
 	
 	      <div class="content">
@@ -118,7 +126,7 @@
                                      </div>
                                      <div class="ui bottom attached button" id="playButtonId">
                                          <i class="game pad icon"></i>
-                                         Play Game
+                                         Craft a card
                                      </div>
                                  </div>
                              </div>
@@ -210,6 +218,48 @@
             </div>
 
         </div>
+        
+        
+  <div id = "craft">
+  <div class=" five wide column">
+                <!------------------------------------------------------------------------->
+                <!--    ----------------------------- CARD ----------------------------- -->
+                <!------------------------------------------------------------------------->
+                 <h3 class="ui  aligned header">  </h3>
+                <div class="column">
+                <div id = "cardId" style = "display:none"></div>
+                    <div class="ui card">
+                     <div class="content" style="text-align:center;"'>
+                           <span id = "Name"></span>
+                       </div>
+                        <div class="image">
+							<img id="cardImgId" class="ui centered tiny image" src="" />
+						</div>
+                            <div class="content">
+                                <i class="lightning outline icon"></i><span id="cardAttack"></span> 
+                                <div class="right floated ">
+                                    <i class="protect icon"></i>
+                                    <span id="cardDefence"></span> 
+                                </div>
+                            </div>
+                      		
+                      		<div  id ="OrderSelected">
+                            <div class="ui bottom attached button">
+                                <i class="money icon"></i>
+                                <span id = marketType> </span> <span>for</span> <span id="cardPriceId"> 100</span><span>$</span>
+                            </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+  
+  
+  </div>
 
 
  <script src="js/jquery-3.3.1.min.js"></script>

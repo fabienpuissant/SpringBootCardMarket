@@ -2,6 +2,6 @@
 	display: none;
 }
 
-#sellIcon, #buyIcon, #homeIcon{
+#sellIcon, #buyIcon, #homeIcon, #craftIcon{
 	 cursor: pointer;
 }

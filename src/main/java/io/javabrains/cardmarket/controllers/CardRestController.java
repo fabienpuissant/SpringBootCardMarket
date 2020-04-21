@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import io.javabrains.cardmarket.models.CardEntity;
+import io.javabrains.cardmarket.models.CardFactory;
 import io.javabrains.cardmarket.models.UserEntity;
 import io.javabrains.cardmarket.utils.Tools;
 
@@ -78,24 +80,12 @@ public class CardRestController {
 
 	private List<CardEntity> generateCard(){
 		List<CardEntity> cardlist = new ArrayList<CardEntity>();
-		CardEntity card;
-		card = new CardEntity("Tayloy", "http://fairedesgifs.free.fr/da/sh/batman/batman%20(24).gif", "Description", 15, 20);
-		cardlist.add(card);
-		card = new CardEntity("Supej", "http://fairedesgifs.free.fr/da/sh/hulk/hulk%20(3).gif", "Description", 25, 20);
-		cardlist.add(card);
-		card = new CardEntity("Juye", "http://fairedesgifs.free.fr/da/sh/deadpool/dp%20(18).gif", "Description", 35, 40);
-		cardlist.add(card);
-		card = new CardEntity("Protec", "http://fairedesgifs.free.fr/da/sh/superman/superman%20(5).gif", "Description", 55, 20);
-		cardlist.add(card);
-		card = new CardEntity("Crewis", "http://fairedesgifs.free.fr/dragon/dragon-(16).gif", "Description", 15, 30);
-		cardlist.add(card);
-		card = new CardEntity("Cranit", "http://fairedesgifs.free.fr/dragon/dragon-(2).gif", "Description", 90, 30);
-		cardlist.add(card);
+		CardFactory cardFactory = new CardFactory();
 		for (int i = 0; i < 20; i++) {
-			card = new CardEntity("Tyro" + String.valueOf(i), "http://fairedesgifs.free.fr/dragon/dragon-("+String.valueOf(i)+").gif", "Description", 70, 30);
-			cardlist.add(card);
+			cardlist.add(cardFactory.createCard());
 		}
-
+		
+		
 		return cardlist;
 	}
 

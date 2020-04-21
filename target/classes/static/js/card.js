@@ -19,9 +19,11 @@ $(document).ready(function() {
 	var type;
 	
 	$("#market").hide();
+	$("#craft").hide();
 	
 	$('#homeIcon').click(function(){
 		$("#market").hide();
+		$("#craft").hide();
 		$("#home").show();
 	});
 	
@@ -35,6 +37,9 @@ $(document).ready(function() {
 		displayBuyMarket();
 	});
 	
+	$("#craft").click(function(){
+		displayCraft();
+	});
 	
 	$("#sellMarket").click(function(){
 		type = "Sell";
@@ -44,6 +49,11 @@ $(document).ready(function() {
 	$("#buyButtonId").click(function(){
 		type = "Buy";
 		displayBuyMarket();
+	});
+	
+	$("craftIcon").click(function(){
+		console.log("ok");
+		displayCraft();
 	});
 	
     //Adding information of the user
@@ -343,4 +353,18 @@ $(document).ready(function() {
 			  }
 		  });
 	}
+	
+	/**
+	 * Display the craft menu
+	 */
+	function displayCraft(){
+		
+		$("#market").hide();
+		$("#home").hide();
+		$("#craft").show();
+		
+	}
+	
+	
+	
 });
