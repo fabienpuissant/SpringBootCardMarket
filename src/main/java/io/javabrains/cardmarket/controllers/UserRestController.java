@@ -45,7 +45,12 @@ public class UserRestController {
 		return userService.getUserByName(name);
 	}
 	
-	@GetMapping("/UserService/user/money/{name}")
+	/**
+	 * Get the money of the user
+	 * @param name
+	 * @return String the money of the user
+	 */
+	@GetMapping("UserService/user/money/{name}")
 	public String getMoney(@PathVariable String name) {
 		return userService.getUserByName(name).getMoney().toString();
 	}
@@ -103,6 +108,12 @@ public class UserRestController {
 		return this.CardStringConversion(buyCards);
 	}
 	
+	/**
+	 * Buy the imgId card to the user corresponding to the name given
+	 * @param name
+	 * @param imgId
+	 * @return
+	 */
 	@GetMapping("UserService/Buy/{name}/{imgId}")
 	public boolean buyCard(@PathVariable String name, @PathVariable String imgId) {
 		UserEntity user = userService.getUserByName(name);
@@ -134,7 +145,11 @@ public class UserRestController {
 		return bool;
 	}
 	
-	
+	/**
+	 * Craft a card to the user 
+	 * @param name
+	 * @return
+	 */
 	@GetMapping("UserService/craft/{name}")
 	public String craftCard(@PathVariable String name) {
 		UserEntity user = userService.getUserByName(name);
@@ -164,22 +179,17 @@ public class UserRestController {
 	 */
 	@PostMapping(value="UserService/addUser", consumes=MediaType.APPLICATION_JSON_VALUE)
 	public boolean addUser(@RequestBody UserEntity user) throws IOException {
-		List <CardEntity> cardlist = cardService.getAll();
-		Random r = new Random();
-		Integer randomInt;
-		List<Integer> intlist = new ArrayList<Integer>();
-		for(int i = 0; i < 5 ; i++) {
-			randomInt = r.nextInt(cardlist.size());
-			while(intlist.contains(randomInt)) {
-				randomInt = r.nextInt(cardlist.size());
-				
-			}
-			intlist.add(randomInt);
-			CardEntity card = cardlist.get(randomInt);
-			user.addCard(card);
-			
+		boolean bool = userService.addUser(user);
+		if(!bool) {
+			return false;
 		}
-		return userService.addUser(user);
+		for (int i = 0; i < 5; i++) {
+			CardEntity card = cardFactory.createCard();
+			cardService.addCard(card);
+			user.addCard(card);
+		}
+		userService.updateUser(user);
+		return true;
 	}
 
 	

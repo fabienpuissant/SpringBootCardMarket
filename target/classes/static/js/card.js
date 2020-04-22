@@ -231,10 +231,6 @@ $(document).ready(function() {
 		    
 		    
 		});
-		    
-			
-		    
-	
 	}
 	
 	/**
@@ -322,6 +318,8 @@ $(document).ready(function() {
 		
 		cardDisplayed = 10;
 		
+		$('#craftImg').hide();
+		
 		$("#imgrow").empty();
 		$("#MarketType").text(type + " Market");
 		$('#marketType')[0].innerText=type;
@@ -341,6 +339,9 @@ $(document).ready(function() {
 			  }
 			  
 		});
+		
+		//console.log($(".cardchild"));
+		//console.log($(".cardchild").slice(0,5));
 
 	}
 	
@@ -351,6 +352,8 @@ $(document).ready(function() {
 	function displayBuyMarket(){
 		
 		cardDisplayed = 10;
+		
+		$('#craftImg').hide();
 		
 		$("#imgrow").empty();
 		$("#MarketType").text(type + " Market");
@@ -381,6 +384,7 @@ $(document).ready(function() {
 		$("#market").hide();
 		$("#home").hide();
 		$("#craft").show();
+		$('#craftImg').show();
 		$("#CraftButton").unbind();
 		$("#CraftButton").on("click", function(){
 			

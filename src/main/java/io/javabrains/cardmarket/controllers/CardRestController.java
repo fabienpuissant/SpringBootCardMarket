@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.javabrains.cardmarket.models.CardEntity;
 import io.javabrains.cardmarket.models.CardFactory;
-import io.javabrains.cardmarket.models.UserEntity;
 import io.javabrains.cardmarket.utils.Tools;
 
 
@@ -33,6 +32,12 @@ public class CardRestController {
 	@Autowired
 	private CardService cardService;
 	
+	/**
+	 * Get all the cards of the user
+	 * @param Userid
+	 * @return String
+	 * @throws IOException
+	 */
 	@GetMapping("CardService/card/{Userid}")
 	public String getcard(@PathVariable String Userid) throws IOException {
 		String userCards = this.getUserCards(Userid); 
@@ -40,17 +45,29 @@ public class CardRestController {
 
 	}
 	
+	/**
+	 * Get number of cards in the database
+	 * @return long
+	 */
 	@GetMapping("CardService/card/number")
 	public long getNumber() {
 		return cardService.getNumber();
 	}
 	
+	/**
+	 * Get the card with corresponding id
+	 * @param id
+	 * @return String Json of the card
+	 */
 	@GetMapping("CardService/{id}")
 	public String getCardFeatures(@PathVariable String id) {
 		CardEntity card = cardService.getCardById(id);
 		return Tools.toJsonString(card);
 	}
 	
+	/**
+	 * Init function to create initial cards
+	 */
 	@GetMapping("init")
 	public void getcard() {
 		List<CardEntity> cardlist = this.generateCard();
@@ -61,11 +78,21 @@ public class CardRestController {
 		
 	}
 	
+	/**
+	 * Add a card 
+	 * @param card
+	 */
 	@PostMapping(value="CardService/addCard", consumes=MediaType.APPLICATION_JSON_VALUE)
 	public void addCard(@RequestBody CardEntity card) {
 		cardService.addCard(card);
 	}
 	
+	/**
+	 * Get the corresponding id card of the user
+	 * @param id
+	 * @return String 
+	 * @throws IOException
+	 */
 	private String getUserCards(String id) throws IOException {
 		URL obj = new URL("http://localhost:8080/UserService/user/cards/"+id);
         HttpURLConnection httpURLConnection = (HttpURLConnection) obj.openConnection();
@@ -79,7 +106,10 @@ public class CardRestController {
         return response.toString();
 	}
 	
-
+	/**
+	 * Generation of initial cards
+	 * @return List<CardEntity>
+	 */
 	private List<CardEntity> generateCard(){
 		List<CardEntity> cardlist = new ArrayList<CardEntity>();
 		for (int i = 0; i < 20; i++) {
