@@ -28,6 +28,8 @@ import io.javabrains.cardmarket.utils.Tools;
 @RestController
 public class CardRestController {
 	
+	private CardFactory cardFactory = new CardFactory();
+	
 	@Autowired
 	private CardService cardService;
 	
@@ -80,9 +82,8 @@ public class CardRestController {
 
 	private List<CardEntity> generateCard(){
 		List<CardEntity> cardlist = new ArrayList<CardEntity>();
-		CardFactory cardFactory = new CardFactory();
 		for (int i = 0; i < 20; i++) {
-			cardlist.add(cardFactory.createCard());
+			cardlist.add(this.cardFactory.createCard());
 		}
 		
 		

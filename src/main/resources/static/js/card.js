@@ -5,10 +5,6 @@ if(sessionStorage.getItem("Name") == null){
 	window.location.href = "/login.html";
 }
 
-$(".cardbutton").on("click", function(){
-	console.log('ok'); 
-});
-
 $(document).ready(function() {
 	
 	var cardDisplayed = 10;
@@ -37,7 +33,7 @@ $(document).ready(function() {
 		displayBuyMarket();
 	});
 	
-	$("#craft").click(function(){
+	$("#CraftButtonId").click(function(){
 		displayCraft();
 	});
 	
@@ -51,8 +47,7 @@ $(document).ready(function() {
 		displayBuyMarket();
 	});
 	
-	$("craftIcon").click(function(){
-		console.log("ok");
+	$("#craftIcon").click(function(){
 		displayCraft();
 	});
 	
@@ -71,7 +66,7 @@ $(document).ready(function() {
 	 * Toast a success message
 	 * @param String the message to toast
 	 */
-	function toast(msg){
+	function toast(msg, header, type){
 		toastr.options = {
 				  "closeButton": false,
 				  "debug": false,
@@ -89,7 +84,7 @@ $(document).ready(function() {
 				  "showMethod": "fadeIn",
 				  "hideMethod": "fadeOut"
 				}
-		toastr["success"](msg, "Success");
+		toastr[type](msg, header);
 	}
 	
 	/**
@@ -110,6 +105,26 @@ $(document).ready(function() {
 	    $('#cardDefence').text(defence);
 	    $('#cardPriceId').text(price);
 	    $('#cardId').text(id);
+	}
+	
+	/**
+	 * Fill the selected image
+	 * @param String imgUrl
+	 * @param String name
+	 * @param String description
+	 * @param String attack
+	 * @param String defence
+	 * @param String price
+	 * @param String id
+	 */
+	function fillImageCraft(imgUrl, name, description, attack, defence, price, id){
+		$('#cardImgIdCraft').attr("src", imgUrl);
+	    //$('#cardDescriptionId').text(description);
+	    $('#NameCraft').text(name);
+	    $('#cardAttackCraft').text(attack);
+	    $('#cardDefenceCraft').text(defence);
+	    $('#cardPriceIdCraft').text(price);
+	    $('#cardIdCraft').text(id);
 	}
 	
 	/**
@@ -178,6 +193,13 @@ $(document).ready(function() {
 		    fillImage(imgUrl, name, description, attack, defence, price, id);
 		    
 		    if($(event.target).closest("td").attr('class') == "cardbutton"){
+		    	 var alert = confirm("Would you really " + type + " the selected card ?");
+					
+					if(!alert){
+						return;
+					} 
+					
+		    	
 		    	$.ajax({
 					  url:"/UserService/" + type + "/" + json.name + "/" + id,
 					  type:"GET",
@@ -199,7 +221,7 @@ $(document).ready(function() {
 									msg = "Card purchased";
 								}
 								
-								toast(msg);
+								toast(msg, "Success", "success");
 						  }
 					  }
 					
@@ -223,11 +245,11 @@ $(document).ready(function() {
 		//Onclick on the selected image
 		$("#OrderSelected").unbind();
 		$("#OrderSelected").on("click", function(){
-			/* var msg = confirm("Would you really " + type + " the selected card ?");
+			 var alert = confirm("Would you really " + type + " the selected card ?");
 			
-			if(!msg){
+			if(!alert){
 				return;
-			} */
+			} 
 			
 			var id = $("#cardId").text();
 			
@@ -243,11 +265,8 @@ $(document).ready(function() {
 						  //Update the current money of the user
 						  updateMoney();
 						  //Refill image
-						  refillImage();
-						  
-	
-						
-					  }
+						  refillImage();	
+					  } 
 				  }
 			  });
 			
@@ -259,7 +278,7 @@ $(document).ready(function() {
 				msg = "Card purchased";
 			}
 			
-			toast(msg);
+			toast(msg, "Success", "success");
 			
 			
 		});
@@ -362,8 +381,26 @@ $(document).ready(function() {
 		$("#market").hide();
 		$("#home").hide();
 		$("#craft").show();
+		$("#CraftButton").unbind();
+		$("#CraftButton").on("click", function(){
+			
+			$.ajax({
+				  url:"UserService/craft/" + json.name,
+				  type:"GET",
+				  success: function( data ){
+					  if(data == ""){
+						  toast("Not enought money", "Error", "error");
+						  return;
+					  }
+					  var json = JSON.parse(data);
+					  updateMoney();
+					  fillImageCraft(json.imgUrl, json.name, json.description, json.attack, json.defence, json.price, json.id);
+				  }
+			});
 		
+		});
 	}
+		
 	
 	
 	

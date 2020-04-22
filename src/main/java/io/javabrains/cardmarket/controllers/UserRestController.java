@@ -20,11 +20,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.javabrains.cardmarket.models.CardEntity;
+import io.javabrains.cardmarket.models.CardFactory;
 import io.javabrains.cardmarket.models.UserEntity;
 import io.javabrains.cardmarket.utils.Tools;
 
 @RestController
 public class UserRestController {
+	
+	private CardFactory cardFactory = new CardFactory();
 	
 	@Autowired
 	private UserService userService;
@@ -107,7 +110,6 @@ public class UserRestController {
 		if(user.getMoney() < card.getPrice()) {
 			return false;
 		}
-		
 		user.addCard(card);
 		user.setMoney(user.getMoney() - card.getPrice());
 		userService.updateUser(user);
@@ -116,6 +118,12 @@ public class UserRestController {
 		
 	}
 	
+	/**
+	 * Sell the card of the user
+	 * @param name
+	 * @param imgId
+	 * @return boolean
+	 */
 	@GetMapping("UserService/Sell/{name}/{imgId}")
 	public boolean sellCard(@PathVariable String name, @PathVariable String imgId) {
 		UserEntity user = userService.getUserByName(name);
@@ -124,6 +132,27 @@ public class UserRestController {
 		user.setMoney(user.getMoney() + card.getPrice());
 		userService.updateUser(user);
 		return bool;
+	}
+	
+	
+	@GetMapping("UserService/craft/{name}")
+	public String craftCard(@PathVariable String name) {
+		UserEntity user = userService.getUserByName(name);
+		if(user.getMoney() < 100){
+			return "";
+		}
+		else {
+			CardEntity card = cardFactory.createCard();
+			user.addCard(card);
+			cardService.addCard(card);
+			if(user.getMoney() < 250) {
+				return "";
+			}
+			user.setMoney(user.getMoney() - 250);
+			userService.updateUser(user);
+			return Tools.toJsonString(card);
+			
+		}
 	}
 	
 	
@@ -152,6 +181,7 @@ public class UserRestController {
 		}
 		return userService.addUser(user);
 	}
+
 	
 	/**
 	 * Erase the last character of the string
