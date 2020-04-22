@@ -201,7 +201,7 @@ $(document).ready(function() {
 					
 		    	
 		    	$.ajax({
-					  url:"/UserService/" + type + "/" + json.name + "/" + id,
+					  url:"/MarketService/" + type + "/" + json.name + "/" + id,
 					  type:"GET",
 					  success: function( data ){
 						  if(data == true){
@@ -222,6 +222,8 @@ $(document).ready(function() {
 								}
 								
 								toast(msg, "Success", "success");
+						  } else {
+							  toast("Not enought money", "Error", "error");
 						  }
 					  }
 					
@@ -250,7 +252,7 @@ $(document).ready(function() {
 			var id = $("#cardId").text();
 			
 			$.ajax({
-				  url:"/UserService/" + type + "/" + json.name + "/" + id,
+				  url:"/MarketService/" + type + "/" + json.name + "/" + id,
 				  type:"GET",
 				  success: function( data ){
 					  if(data == true){
@@ -363,7 +365,7 @@ $(document).ready(function() {
 		
 		
 		$.ajax({
-			  url:"UserService/user/BuyCards/" + json.id,
+			  url:"MarketService/user/BuyCards/" + json.id,
 			  type:"GET",
 			  success: function( data ){
 				  cards = data.split('/');
@@ -389,7 +391,7 @@ $(document).ready(function() {
 		$("#CraftButton").on("click", function(){
 			
 			$.ajax({
-				  url:"UserService/craft/" + json.name,
+				  url:"MarketService/craft/" + json.name,
 				  type:"GET",
 				  success: function( data ){
 					  if(data == ""){

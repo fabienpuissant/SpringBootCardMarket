@@ -29,8 +29,17 @@ public class CardRestController {
 	
 	private CardFactory cardFactory = new CardFactory();
 	
-	@Autowired
+	
 	private CardService cardService;
+	
+	public CardRestController(CardService cardService) {
+		this.cardService = cardService;
+		List<CardEntity> cardlist = this.generateCard();
+		for (int i = 0; i < cardlist.size(); i++) {
+			CardEntity card = cardlist.get(i);
+			cardService.addCard(card);
+		}
+	}
 	
 	/**
 	 * Get all the cards of the user
@@ -65,18 +74,6 @@ public class CardRestController {
 		return Tools.toJsonString(card);
 	}
 	
-	/**
-	 * Init function to create initial cards
-	 */
-	@GetMapping("init")
-	public void getcard() {
-		List<CardEntity> cardlist = this.generateCard();
-		for (int i = 0; i < cardlist.size(); i++) {
-			CardEntity card = cardlist.get(i);
-			cardService.addCard(card);
-		}
-		
-	}
 	
 	/**
 	 * Add a card 
@@ -119,6 +116,8 @@ public class CardRestController {
 		
 		return cardlist;
 	}
+	
+
 
 }
 

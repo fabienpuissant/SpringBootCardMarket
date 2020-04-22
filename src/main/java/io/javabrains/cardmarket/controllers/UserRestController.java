@@ -89,87 +89,6 @@ public class UserRestController {
 		
 	}
 	
-	/**
-	 * Get all cards that user does not have
-	 * @param id
-	 * @return String all the card that user can buy
-	 * @throws IOException
-	 */
-	@GetMapping("UserService/user/BuyCards/{id}")
-	public String getBuyCards(@PathVariable String id) throws IOException {
-		Set<CardEntity> userCards = userService.getUserById(id).getCards();
-		List<CardEntity> allCards = cardService.getAll();
-		String buyCards = "";
-		for(CardEntity card: allCards) {
-			if(!userCards.contains(card)) {
-				buyCards += String.valueOf(card.getId()) + "/";
-			}
-		}
-		return this.CardStringConversion(buyCards);
-	}
-	
-	/**
-	 * Buy the imgId card to the user corresponding to the name given
-	 * @param name
-	 * @param imgId
-	 * @return
-	 */
-	@GetMapping("UserService/Buy/{name}/{imgId}")
-	public boolean buyCard(@PathVariable String name, @PathVariable String imgId) {
-		UserEntity user = userService.getUserByName(name);
-		CardEntity card = cardService.getCardById(imgId);
-		if(user.getMoney() < card.getPrice()) {
-			return false;
-		}
-		user.addCard(card);
-		user.setMoney(user.getMoney() - card.getPrice());
-		userService.updateUser(user);
-		return true;
-		
-		
-	}
-	
-	/**
-	 * Sell the card of the user
-	 * @param name
-	 * @param imgId
-	 * @return boolean
-	 */
-	@GetMapping("UserService/Sell/{name}/{imgId}")
-	public boolean sellCard(@PathVariable String name, @PathVariable String imgId) {
-		UserEntity user = userService.getUserByName(name);
-		CardEntity card = cardService.getCardById(imgId);
-		boolean bool = user.removeCard(card);
-		user.setMoney(user.getMoney() + card.getPrice());
-		userService.updateUser(user);
-		return bool;
-	}
-	
-	/**
-	 * Craft a card to the user 
-	 * @param name
-	 * @return
-	 */
-	@GetMapping("UserService/craft/{name}")
-	public String craftCard(@PathVariable String name) {
-		UserEntity user = userService.getUserByName(name);
-		if(user.getMoney() < 100){
-			return "";
-		}
-		else {
-			CardEntity card = cardFactory.createCard();
-			user.addCard(card);
-			cardService.addCard(card);
-			if(user.getMoney() < 250) {
-				return "";
-			}
-			user.setMoney(user.getMoney() - 250);
-			userService.updateUser(user);
-			return Tools.toJsonString(card);
-			
-		}
-	}
-	
 	
 	/**
 	 * Add user in the database
@@ -191,7 +110,6 @@ public class UserRestController {
 		userService.updateUser(user);
 		return true;
 	}
-
 	
 	/**
 	 * Erase the last character of the string
